@@ -11,7 +11,7 @@ SCRIPT_HOME="$( cd "$( dirname "$0" )" && pwd )"
 usage () {
   cat <<-EOF
 
-  Usage: $0 {start|stop|build|rebuild|shell}
+  Usage: $0 {start|start-d|stop|build|rebuild|shell}
 
   Options:
 
@@ -146,6 +146,12 @@ case "$1" in
       _startupParams=$(getStartupParams $@)
       configureEnvironment $@
       docker-compose up ${_startupParams}
+    ;;
+  start-d)
+      shift
+      _startupParams=$(getStartupParams $@)
+      configureEnvironment $@
+      docker-compose up -d ${_startupParams}
     ;;
   stop)
       docker-compose stop

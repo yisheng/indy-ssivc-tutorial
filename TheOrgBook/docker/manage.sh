@@ -22,7 +22,7 @@ export COMPOSE_PROJECT_NAME="tob"
 usage() {
   cat <<-EOF
 
-  Usage: $0 {start|stop|build|rm}
+  Usage: $0 {start|start-d|stop|build|rm}
 
   Options:
 
@@ -262,6 +262,13 @@ case "$1" in
     _startupParams=$(getStartupParams $@)
     configureEnvironment $@
     docker-compose up ${_startupParams}
+    ;;
+  start-d)
+    COMMAND=$1
+    shift
+    _startupParams=$(getStartupParams $@)
+    configureEnvironment $@
+    docker-compose up -d ${_startupParams}
     ;;
   stop)
     configureEnvironment

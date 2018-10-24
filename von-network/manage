@@ -26,6 +26,21 @@ case "$1" in
         fi
       fi
     ;;
+  start-d)
+      if [ ! "$(docker network ls -q -f name=indy-world)" ]; then
+        docker network create --subnet=172.16.10.0/24 --ip-range=172.16.10.0/24 indy-world
+      fi
+      if [ -z "$2" ]; then
+        docker-compose up -d von-web node1 node2 node3 node4
+      else
+        if [[ $2 == *","* ]]; then
+          # If arg contains comma, then it should be multiple IPS
+          IPS=$2 docker-compose up -d von-web node1 node2 node3 node4
+        else
+          IP=$2 docker-compose up -d von-web node1 node2 node3 node4
+        fi
+      fi
+    ;;
   cli)
       if [ -z "$2" ]; then
         docker-compose run client
@@ -48,7 +63,7 @@ case "$1" in
       docker volume rm -f von_node1-data von_node2-data von_node3-data von_node4-data von_von-client-cli von_von-client-libindy von_von-web-indy
     ;;
   *)
-    echo $"Usage: $0 {start|cli|stop|build|rebuild}"
+    echo $"Usage: $0 {start|start-d|cli|stop|build|rebuild}"
 esac
 
 ( cd - ) > /dev/null
