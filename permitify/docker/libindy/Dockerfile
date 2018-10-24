@@ -39,7 +39,11 @@ RUN rm -rf $HOME/.cargo \
   $HOME/.multirust \
   $HOME/rustup
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 68DB5E88
+# Ref: https://unix.stackexchange.com/questions/361213/unable-to-add-gpg-key-with-apt-key-behind-a-proxy
+# RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 68DB5E88
+ADD keys.txt $HOME/
+RUN apt-key add $HOME/keys.txt
+
 ARG indy_stream=master
 RUN echo "deb https://repo.sovrin.org/deb xenial $indy_stream" >> /etc/apt/sources.list
 
