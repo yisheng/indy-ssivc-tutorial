@@ -16,6 +16,7 @@ ENV SHELL="/bin/bash"
 ENV RUST_LOG=error
 
 # Install environment
+RUN apt-get clean
 RUN apt-get update -y && apt-get install -y \
     git \
     wget \
